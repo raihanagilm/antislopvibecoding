@@ -85,21 +85,21 @@ supaya pasti terbaca oleh `WF-01`. Perbarui bila struktur berubah (`WF-09`).
 - Kalau rahasia telanjur ter-commit: **rotasi/ubah** rahasianya, bukan sekadar hapus file.
 - Sediakan `.env.example` (tanpa nilai asli) sebagai contoh.
 
-### Setup dua akun GitHub (SSH)
+### Setup dua akun GitHub
 
-Kredensial GitHub **dipakai bersama** antar tool, jadi akun dari satu IDE bisa "bocor" ke IDE lain (Akun A tidak bisa push ke repo Akun B). Solusinya: **SSH key terpisah per akun** lewat *host alias* di `~/.ssh/config`.
+Kredensial GitHub **dipakai bersama** antar tool (Antigravity & VS Code), jadi akun dari satu IDE bisa "bocor" ke IDE lain. Contoh nyata: akun `meintervuai` (Antigravity) **tidak punya izin push** ke repo milik `raihanagilm` (VS Code).
 
-| Alias | Akun | Key | Dipakai untuk |
-|---|---|---|---|
-| `github-raihan` | `raihanagilm` | `~/.ssh/id_ed25519_raihan` | **VS Code**, repo ini |
-| `github-intervuai` | `meintervuai` | `~/.ssh/id_ed25519_intervuai` | Antigravity |
+Solusi: **pisah lewat username di URL remote** — git/GCM lalu memakai kredensial akun yang cocok, tanpa menghapus kredensial milik tool lain.
 
-Remote repo ini memakai alias: `git@github-raihan:raihanagilm/antislopvibecoding.git`
+| Tool | Akun | Bentuk remote |
+|---|---|---|
+| **VS Code** | `raihanagilm` | `https://raihanagilm@github.com/raihanagilm/antislopvibecoding.git` |
+| Antigravity | `meintervuai` | `https://github.com/meintervuai/<repo>.git` |
 
-- **Tes koneksi:** `ssh -T git@github-raihan` → harus membalas `Hi raihanagilm!`
-- **Pushing:** `git push -u origin main`
-- **Clone repo akun lain:** `git clone git@github-intervuai:<user>/<repo>.git`
+- **Push:** `git push -u origin main` → saat pertama kali, git/VS Code meminta login `raihanagilm`.
+- **Ganti akun repo:** `git remote set-url origin https://<username>@github.com/<username>/<repo>.git`
+- GitHub **tidak menerima password** — bila diminta, pakai **Personal Access Token** (scope `repo`).
 
-> Public key tiap akun harus didaftarkan di GitHub (Settings → SSH and GPG keys) sebelum bisa dipakai.
+> **Alternatif (sudah disiapkan): SSH key terpisah per akun.** `~/.ssh/config` berisi alias `github-raihan` & `github-intervuai`, dengan key `id_ed25519_raihan` dan `id_ed25519_intervuai`. Tinggal daftarkan public key-nya di GitHub (Settings → SSH and GPG keys), lalu remote diubah ke `git@github-raihan:raihanagilm/antislopvibecoding.git`.
 
 Catatan: repo ini **dokumen saja** — belum ada kode/data sensitif; `.gitignore` disiapkan untuk proyek turunan.
