@@ -85,4 +85,21 @@ supaya pasti terbaca oleh `WF-01`. Perbarui bila struktur berubah (`WF-09`).
 - Kalau rahasia telanjur ter-commit: **rotasi/ubah** rahasianya, bukan sekadar hapus file.
 - Sediakan `.env.example` (tanpa nilai asli) sebagai contoh.
 
+### Setup dua akun GitHub (SSH)
+
+Kredensial GitHub **dipakai bersama** antar tool, jadi akun dari satu IDE bisa "bocor" ke IDE lain (Akun A tidak bisa push ke repo Akun B). Solusinya: **SSH key terpisah per akun** lewat *host alias* di `~/.ssh/config`.
+
+| Alias | Akun | Key | Dipakai untuk |
+|---|---|---|---|
+| `github-raihan` | `raihanagilm` | `~/.ssh/id_ed25519_raihan` | **VS Code**, repo ini |
+| `github-intervuai` | `meintervuai` | `~/.ssh/id_ed25519_intervuai` | Antigravity |
+
+Remote repo ini memakai alias: `git@github-raihan:raihanagilm/antislopvibecoding.git`
+
+- **Tes koneksi:** `ssh -T git@github-raihan` → harus membalas `Hi raihanagilm!`
+- **Pushing:** `git push -u origin main`
+- **Clone repo akun lain:** `git clone git@github-intervuai:<user>/<repo>.git`
+
+> Public key tiap akun harus didaftarkan di GitHub (Settings → SSH and GPG keys) sebelum bisa dipakai.
+
 Catatan: repo ini **dokumen saja** — belum ada kode/data sensitif; `.gitignore` disiapkan untuk proyek turunan.
